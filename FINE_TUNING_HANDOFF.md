@@ -27,21 +27,37 @@ mapping disagreements — so this should run cleanly.
 
 1. **Open Colab:** go to https://colab.research.google.com, then
    **File → Upload notebook**, and select `notebooks/finetune_legal_bert_cuad.ipynb`
-   from this project folder.
+   from this project folder.  
+   *(Re-upload the notebook each time you retry — always use the latest copy from this repo.)*
 2. **Turn on a GPU:** in the Colab menu, **Runtime → Change runtime type →
    Hardware accelerator → T4 GPU** (the free tier's T4 is enough — no need to pay
    for Colab Pro).
 3. **Run everything:** **Runtime → Run all**. Confirm any "run anyway" warning
    Colab shows for notebooks not authored by Google.
-4. **Wait.** Expect roughly **1-2 hours**. You can close the laptop lid/tab and
+4. **Runtime restart may be required (read this):**  
+   Colab pre-loads older package versions into memory. After the first cell
+   installs fresh packages, the notebook checks whether the loaded version is
+   new enough. If it prints a *"WARNING: transformers X.X is loaded but we need
+   >= 4.4"* message, do exactly what it says:  
+   - **Runtime → Restart runtime** (or Ctrl+M .)  
+   - Then **Runtime → Run all** again  
+   
+   On most current Colab instances no restart is needed, but this handles the
+   edge case where it is. Once you click "Run all" after the restart the
+   notebook completes without interruption.
+5. **Authorize Google Drive** when the Drive mount cell runs (cell 2b). It will
+   open a browser popup — allow access. This saves all checkpoints and the final
+   model to your Google Drive under `My Drive/legal-bert-cuad-training/` so they
+   survive if the Colab session disconnects. **Do not skip this step.**
+6. **Wait.** Expect roughly **1-2 hours**. You can close the laptop lid/tab and
    check back — Colab keeps running in the background for a while, but don't
    let the browser tab stay closed for too many hours or the session may
-   disconnect and you'll need to re-run from the top.
-5. **If a cell shows a red error box:** stop there, don't try to fix it — copy
+   disconnect. If it does disconnect, your files are safe in Drive.
+7. **If a cell shows a red error box:** stop there, don't try to fix it — copy
    the full error text (and the cell just above it) and send it to me. The
    notebook is written to fail loudly with clear messages rather than silently
    produce a broken model, so an error is meant to be reported, not debugged by you.
-6. **Near the end**, the notebook asks you to hand off the trained model. Pick
+8. **Near the end**, the notebook asks you to hand off the trained model. Pick
    **one** of these two paths:
 
    **Option A — Hugging Face Hub (recommended, easiest for me to use):**
@@ -58,10 +74,55 @@ mapping disagreements — so this should run cleanly.
    - Send it to me via Google Drive link, WeTransfer, or similar — it's too
      big to paste into chat.
 
-7. **Copy the evaluation table** printed in the "Evaluate" step (or grab
+9. **Copy the evaluation table** printed in the "Evaluate" step (or grab
    `cuad_classification_report.csv` from Colab's file browser on the left) —
    this is the accuracy/precision/recall/F1 table the project proposal's
    evaluation section needs. Send it along with the model.
+
+## Troubleshooting — known errors and their fixes
+
+### Error: `TypeError: TrainingArguments.__init__() got an unexpected keyword argument 'warmup_ratio'`  
+### Error: `TypeError: TrainingArguments.__init__() got an unexpected keyword argument 'evaluation_strategy'`
+
+These are two sides of the same version problem:
+
+| What failed | What it means |
+|---|---|
+| `warmup_ratio` | Colab runtime has **old** transformers (< 4.4) cached in-process |
+| `evaluation_strategy` | Colab runtime has **new** transformers (>= 4.45+) where the old name was removed |
+
+`eval_strategy` is the current correct name (added in 4.41). `evaluation_strategy` was the old name (removed later). `warmup_ratio` is available from 4.4 onward but not before.
+
+**Fix (already applied in the current notebook):** The notebook now:
+- Computes `warmup_steps` directly (equivalent to `warmup_ratio=0.06`, works in every version)
+- Tries `eval_strategy="epoch"` first; if that raises `TypeError`, falls back to `evaluation_strategy="epoch"`
+- Uses `AutoConfig.from_pretrained(...)` to silence the `num_labels=42` warning
+
+If you still get this error it means you're running an old copy of the notebook.  
+**Re-upload the latest `notebooks/finetune_legal_bert_cuad.ipynb` from this repo**, then follow step 4 (runtime restart if prompted).
+
+### Error: `ValueError: Provided path '/content/...' is not a directory` (or `NameError: name 'model' is not defined`)
+
+**What it means:** The Colab session disconnected and reset, wiping `/content/`. The model files are gone.
+
+**Fix:** The current notebook mounts Google Drive in step 2b and saves all checkpoints + the final model to `My Drive/legal-bert-cuad-training/`. As long as you authorized Drive access, your files are still there. Re-upload the notebook, run from the top — Drive will remount and the push cell will upload from Drive directly. No retraining needed.
+
+If you did not authorize Drive (ran an old copy of the notebook), you need to retrain. Re-upload the latest notebook and run again — this time authorize Drive when prompted.
+
+---
+
+### Warning: `You passed num_labels=42 which is incompatible to the id2label map of length 2`
+
+**What it means:** The base `nlpaueb/legal-bert-base-uncased` model was
+previously fine-tuned for a 2-class task. Its old classification head is
+discarded and replaced with a new randomly-initialised 42-class head.
+
+**This is not an error.** The LOAD REPORT lines saying `UNEXPECTED` (old head
+keys) and `MISSING` (`classifier.bias`, `classifier.weight`) are expected
+behavior for any model you're adapting to a new task. Training will proceed
+correctly.
+
+---
 
 ## What to send back to me
 

@@ -4,6 +4,7 @@ Supports:
 - xAI / SpaceXAI (OpenAI-compatible API at https://api.x.ai/v1) — default
 - OpenAI
 - Anthropic
+- Groq (free tier, OpenAI-compatible API at https://api.groq.com/openai/v1)
 
 Never logs clause text (treated as sensitive).
 """
@@ -123,6 +124,13 @@ class ClauseSimplifier:
             return self._call_openai_compatible(
                 api_key=self.settings.openai_api_key,
                 base_url="https://api.openai.com/v1",
+                model=self.settings.llm_model,
+                user_prompt=user_prompt,
+            )
+        if provider == "groq":
+            return self._call_openai_compatible(
+                api_key=self.settings.groq_api_key,
+                base_url="https://api.groq.com/openai/v1",
                 model=self.settings.llm_model,
                 user_prompt=user_prompt,
             )

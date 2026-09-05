@@ -1474,3 +1474,348 @@ input {
     flex-direction: column;
   }
 }
+
+/* ========== Landing page additions ========== */
+
+/* ── Stat strip ── */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+.stat-strip-item {
+  background: var(--surface);
+  padding: 1.5rem 1.5rem 1.4rem;
+}
+
+.stat-strip-n {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.8vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-strip-label {
+  margin-top: 0.3rem;
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+}
+
+.stat-strip-sub {
+  margin-top: 0.15rem;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+/* ── Split demo layout ── */
+.split-demo {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.split-text > p {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  max-width: 28rem;
+}
+
+.split-h2 {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 3.8vw, 2.9rem);
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+}
+
+.split-h2 .dim {
+  color: var(--muted-2);
+}
+
+/* ── Mock demo widget ── */
+.mock-demo {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.mock-demo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 0.95rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-alt);
+}
+
+.mock-file-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.mock-status {
+  font-size: 0.75rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease;
+}
+
+.mock-feed {
+  padding: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-height: 300px;
+}
+
+.mock-scan-bar {
+  height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  overflow: hidden;
+  margin: 0.3rem 0;
+}
+
+.mock-scan-sweep {
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--ink-soft), transparent);
+  animation: mock-sweep 1s ease-in-out infinite;
+}
+
+@keyframes mock-sweep {
+  0%   { transform: translateX(-150%); }
+  100% { transform: translateX(350%); }
+}
+
+.mock-clause {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-alt);
+  padding: 0.65rem 0.8rem;
+}
+
+.mock-clause-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.mock-category {
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.mock-badge {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: var(--radius-pill);
+  padding: 0.18rem 0.5rem;
+}
+
+.mock-reason {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ── Comparison table ── */
+.compare-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--inverse-border);
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.compare-table thead {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.compare-table th {
+  padding: 0.85rem 1.1rem;
+  text-align: left;
+  font-size: 0.73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--inverse-muted);
+  border-bottom: 1px solid var(--inverse-border);
+}
+
+.th-feat { width: 18%; }
+.th-cg   { width: 41%; color: var(--low) !important; }
+.th-llm  { width: 41%; }
+
+.th-cg-pill {
+  display: inline-block;
+  background: rgba(28, 122, 61, 0.18);
+  color: var(--low);
+  border: 1px solid rgba(28, 122, 61, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 0.22rem 0.65rem;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.compare-table tbody tr {
+  border-bottom: 1px solid var(--inverse-border);
+  transition: background 0.12s ease;
+}
+
+.compare-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.compare-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.td-feat {
+  padding: 0.8rem 1.1rem;
+  font-weight: 650;
+  color: var(--inverse-ink);
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.td-cg {
+  padding: 0.8rem 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  vertical-align: top;
+}
+
+.td-llm {
+  padding: 0.8rem 1.1rem;
+  color: var(--inverse-muted);
+  vertical-align: top;
+}
+
+.td-check,
+.td-x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  font-size: 0.6rem;
+  font-weight: 800;
+  margin-right: 0.45rem;
+  flex-shrink: 0;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.td-check {
+  background: var(--low);
+  color: #fff;
+}
+
+.td-x {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--inverse-muted);
+}
+
+/* ── Model performance grid ── */
+.perf-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.perf-card {
+  background: var(--surface);
+  padding: 1.6rem 1.5rem 1.4rem;
+}
+
+.perf-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.perf-label {
+  margin-top: 0.35rem;
+  font-size: 0.88rem;
+  font-weight: 650;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+}
+
+.perf-note {
+  margin-top: 0.15rem;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+/* ── Responsive additions ── */
+@media (max-width: 920px) {
+  .stat-strip,
+  .perf-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .split-demo {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .split-text > p {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .stat-strip,
+  .perf-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .td-feat {
+    white-space: normal;
+    min-width: 100px;
+  }
+
+  .th-feat { width: 22%; }
+  .th-cg, .th-llm { width: 39%; }
+}

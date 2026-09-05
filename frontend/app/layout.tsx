@@ -84,6 +84,9 @@ export default function RootLayout({
                 </span>
               </Link>
               <nav className="nav" aria-label="Primary">
+                <Link className="nav-link" href="/#vs">
+                  vs ChatGPT
+                </Link>
                 <Link className="nav-link" href="/#how">
                   How it works
                 </Link>

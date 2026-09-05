@@ -20,10 +20,10 @@ Project: AI-Powered Contract Clause Risk Analyzer (GCTU BSc CS proposal).
 | 8 | Evaluation questionnaire | ✅ Done (docs) |
 | 9 | Polish & handoff | ✅ Baseline complete |
 | 10 | Full 41-category CUAD taxonomy + Contract Overview | ✅ Done |
-| 11 | Fine-tuning notebook (Colab handoff) | ✅ Notebook ready — awaiting your run, see `FINE_TUNING_HANDOFF.md` |
+| 11 | Fine-tuning notebook (Colab handoff) | ✅ Done — model at `ClauseGuard/legal-bert-cuad-clauses`, wired into `.env` |
 | 12 | Editorial-minimal light/dark redesign (hedgia.net-inspired, dataviz charts, motion) | ✅ Done |
 
-**Last updated:** 2026-08-25  
+**Last updated:** 2026-09-04  
 **Tests:** `12 passed` (`SKIP_MODEL_LOAD=true`)  
 **Verified live:** backend + frontend run together, full upload → analyze → dashboard flow checked in a real browser in both themes, no console errors.
 

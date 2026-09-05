@@ -79,6 +79,7 @@ class ClauseClassifier:
             return
 
         try:
+            import os
             import torch
             from transformers import AutoModel, AutoTokenizer
 
@@ -88,6 +89,10 @@ class ClauseClassifier:
                 or self.settings.model_path
             )
             token = self.settings.hf_token or None
+            # Set env var so huggingface_hub uses auth for ALL requests
+            # (metadata HEAD + CDN download), not just from_pretrained calls.
+            if token:
+                os.environ["HF_TOKEN"] = token
             logger.info("Loading classification model: %s", model_id)
 
             self._tokenizer = AutoTokenizer.from_pretrained(

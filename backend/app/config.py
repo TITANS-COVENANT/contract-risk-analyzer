@@ -23,11 +23,12 @@ class Settings(BaseSettings):
     )
 
     # LLM
-    llm_provider: Literal["xai", "openai", "anthropic"] = "xai"
+    llm_provider: Literal["xai", "openai", "anthropic", "groq"] = "xai"
     llm_model: str = "grok-4.5"
     xai_api_key: str = ""
     openai_api_key: str = ""
     anthropic_api_key: str = ""
+    groq_api_key: str = ""
 
     # Models
     model_path: str = "nlpaueb/legal-bert-base-uncased"
@@ -54,6 +55,8 @@ class Settings(BaseSettings):
             return self.xai_api_key
         if self.llm_provider == "openai":
             return self.openai_api_key
+        if self.llm_provider == "groq":
+            return self.groq_api_key
         return self.anthropic_api_key
 
     def has_llm_key(self) -> bool:
