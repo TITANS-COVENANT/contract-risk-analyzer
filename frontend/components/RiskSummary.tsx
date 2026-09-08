@@ -21,6 +21,8 @@ interface RiskSummaryProps {
   clauses: ClauseResult[];
   onExport?: () => void;
   exporting?: boolean;
+  onExportCorrected?: () => void;
+  exportingCorrected?: boolean;
 }
 
 const RISK_COLOR: Record<RiskLevel, string> = {
@@ -72,6 +74,8 @@ export default function RiskSummary({
   clauses,
   onExport,
   exporting = false,
+  onExportCorrected,
+  exportingCorrected = false,
 }: RiskSummaryProps) {
   const dominant =
     summary.high > 0 ? "high" : summary.medium > 0 ? "medium" : "low";
@@ -126,16 +130,29 @@ export default function RiskSummary({
             {summary.total_clauses === 1 ? "" : "s"} reviewed
           </p>
         </div>
-        {onExport ? (
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={onExport}
-            disabled={exporting}
-          >
-            {exporting ? "Preparing…" : "Export PDF report"}
-          </button>
-        ) : null}
+        <div className="export-actions">
+          {onExport ? (
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={onExport}
+              disabled={exporting}
+            >
+              {exporting ? "Preparing…" : "Export risk report"}
+            </button>
+          ) : null}
+          {onExportCorrected ? (
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={onExportCorrected}
+              disabled={exportingCorrected}
+              title="Download contract with AI-suggested alternatives replacing risky clauses"
+            >
+              {exportingCorrected ? "Building…" : "Download corrected contract"}
+            </button>
+          ) : null}
+        </div>
       </div>
 
       <div className={`risk-pulse risk-pulse-${dominant}`}>

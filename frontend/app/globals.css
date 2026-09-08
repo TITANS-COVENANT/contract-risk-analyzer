@@ -665,6 +665,13 @@ input {
   margin-bottom: 1.1rem;
 }
 
+.export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .panel-head h1 {
   margin: 0;
   font-family: var(--font-display);

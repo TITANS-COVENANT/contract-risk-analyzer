@@ -8,7 +8,7 @@ import FileUpload from "@/components/FileUpload";
 import LoadingState from "@/components/LoadingState";
 import RiskSummary from "@/components/RiskSummary";
 import { analyzeContract, fetchHealth, getApiBaseUrl } from "@/lib/api";
-import { exportAnalysisPdf } from "@/lib/exportReport";
+import { exportAnalysisPdf, exportCorrectedPdf } from "@/lib/exportReport";
 import type { AnalysisResponse, HealthResponse, RiskLevel } from "@/lib/types";
 
 type RiskFilter = "ALL" | RiskLevel;
@@ -22,6 +22,7 @@ const RISK_ORDER: Record<RiskLevel, number> = {
 export default function AnalyzePage() {
   const [loading, setLoading] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [exportingCorrected, setExportingCorrected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AnalysisResponse | null>(null);
   const [selectedName, setSelectedName] = useState<string | null>(null);
@@ -85,6 +86,18 @@ export default function AnalyzePage() {
       setError("Could not export the PDF report. Please try again.");
     } finally {
       setExporting(false);
+    }
+  }, [result]);
+
+  const onExportCorrected = useCallback(async () => {
+    if (!result) return;
+    setExportingCorrected(true);
+    try {
+      await exportCorrectedPdf(result);
+    } catch {
+      setError("Could not generate corrected contract. Please try again.");
+    } finally {
+      setExportingCorrected(false);
     }
   }, [result]);
 
@@ -177,6 +190,8 @@ export default function AnalyzePage() {
             clauses={result.clauses}
             onExport={onExport}
             exporting={exporting}
+            onExportCorrected={onExportCorrected}
+            exportingCorrected={exportingCorrected}
           />
 
           <ContractOverview metadata={result.document_metadata} />
