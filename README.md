@@ -32,28 +32,51 @@ PDF → Parser → Classifier (Sieve) → Risk Scorer (Judge) → LLM Simplifier
 
 ### 1. API keys (for full LLM explanations)
 
+**Groq is the recommended free-tier provider.** No credit card required.
+
+1. Sign up at https://console.groq.com
+2. Go to **API Keys** → **Create API Key**
+3. Copy the key (starts with `gsk_...`)
+
 ```powershell
 copy .env.example .env
-# Edit .env and set XAI_API_KEY (recommended) or OPENAI_API_KEY / ANTHROPIC_API_KEY
 ```
 
-Details: [BUILD.md § API keys](./BUILD.md#-api-keys--what-you-must-provide)
+Then open `.env` and set:
+
+```env
+LLM_PROVIDER=groq
+LLM_MODEL=openai/gpt-oss-120b
+GROQ_API_KEY=gsk_your_key_here
+```
+
+> **Optional alternatives** — xAI, OpenAI, and Anthropic are also supported.
+> Set `LLM_PROVIDER=xai|openai|anthropic` and the matching key variable.
+> These require paid accounts.
+
+**HuggingFace token** (optional, speeds up first model download):
+
+1. Sign up at https://huggingface.co
+2. Go to https://huggingface.co/settings/tokens → **New token** (read access is enough)
+3. Add to `.env`: `HF_TOKEN=hf_your_token_here`
 
 ### 2. Backend
 
 ```powershell
 cd backend
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
+
+- Health check: http://localhost:8000/api/health
+- API docs: http://localhost:8000/docs
 
 ### 3. Frontend
 
 ```powershell
 cd frontend
 copy .env.local.example .env.local
+# NEXT_PUBLIC_API_URL=http://localhost:8000  (change port if needed)
 npm install
 npm run dev
 ```

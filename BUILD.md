@@ -70,46 +70,48 @@ Full proposal: `Project Proposal.pdf`.
 
 ## 🔑 API keys — what you must provide
 
-### You need keys for
+### Recommended: Groq (free tier, no credit card)
 
-| Variable | When | Get it from |
-|----------|------|-------------|
-| **`XAI_API_KEY`** | Default (`LLM_PROVIDER=xai`) | https://console.x.ai (account: https://accounts.x.ai) |
-| `OPENAI_API_KEY` | If `LLM_PROVIDER=openai` | https://platform.openai.com/api-keys |
-| `ANTHROPIC_API_KEY` | If `LLM_PROVIDER=anthropic` | https://console.anthropic.com/ |
-| `HF_TOKEN` (optional) | Rate-limited / private HF models | https://huggingface.co/settings/tokens |
+**Groq** is the active LLM provider. It's free and requires no payment.
+
+1. Sign up at https://console.groq.com
+2. Go to **API Keys** → **Create API Key**
+3. Copy the key (starts with `gsk_...`)
+
+```env
+LLM_PROVIDER=groq
+LLM_MODEL=openai/gpt-oss-120b
+GROQ_API_KEY=gsk_your_key_here
+```
+
+### Optional alternatives
+
+| Variable | Provider | `LLM_PROVIDER=` value | Get key from |
+|----------|----------|-----------------------|--------------|
+| `XAI_API_KEY` | xAI (paid) | `xai` | https://console.x.ai |
+| `OPENAI_API_KEY` | OpenAI (paid) | `openai` | https://platform.openai.com/api-keys |
+| `ANTHROPIC_API_KEY` | Anthropic (paid) | `anthropic` | https://console.anthropic.com |
+
+### HuggingFace token (optional)
+
+Speeds up and stabilizes the first download of the fine-tuned Legal-BERT model (~418 MB).
+
+1. Sign up at https://huggingface.co
+2. Go to https://huggingface.co/settings/tokens → **New token** (read access)
+
+```env
+HF_TOKEN=hf_your_token_here
+```
 
 ### Stages that work **without** any key
 
-- Backend health, PDF parse, classify (keyword or Legal-BERT), risk scoring  
-- Frontend UI shell  
-- Offline plain-English **fallback** text (lower quality)
+- Backend health, PDF parse, classify (keyword or Legal-BERT), risk scoring
+- Frontend UI shell
+- Offline plain-English fallback text (lower quality)
 
 ### Stages that need a key for **full** quality
 
-- Live LLM plain-English + suggested alternatives (Stage 5+)
-
-### How to give keys to the agent (safe)
-
-1. In the project root (`C:\Users\LENOVO\contract-risk-analyzer`):
-
-```powershell
-copy .env.example .env
-notepad .env
-```
-
-2. Set at least:
-
-```env
-LLM_PROVIDER=xai
-LLM_MODEL=grok-4.5
-XAI_API_KEY=xai-your-real-key-here
-```
-
-3. Save the file.  
-4. Tell the agent in chat: **“.env is ready with XAI_API_KEY”**  
-5. **Do not paste the key into chat.**  
-6. `.env` is gitignored — never commit it.
+- Live LLM plain-English explanations + suggested alternatives (Stage 5+)
 
 ### Frontend env (no secrets)
 
