@@ -1,3 +1,8 @@
+# Academic / internal docs — not for the public repo
+FINE_TUNING_HANDOFF.md
+PROJECT_PROGRESS_REPORT.md
+Project Proposal.pdf
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
